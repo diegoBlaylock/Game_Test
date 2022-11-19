@@ -1,0 +1,4 @@
+{
+"basic": "engine.world.tile.types.TileType",
+"anime": "engine.world.tile.types.AnimatedTileType"
+}
