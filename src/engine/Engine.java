@@ -27,7 +27,7 @@ import engine.world.tile.TileMap;
 
 /**
  * Overarching class maintaining instances of core classes such as render, window, world, etc...
- * Runs the game loop and initializes the world and systems
+ * Runs the game loop and initializes the world and systems.
  * 
  * @author diego
  *
