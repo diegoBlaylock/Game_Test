@@ -1,4 +1,4 @@
-package engine.render.utils.sprites;
+package engine.render.sprites;
 
 import engine.ecs.components.RenderComp;
 import engine.render.Texture;
@@ -18,11 +18,7 @@ public class SpriteSheet extends RenderComp{
 	float[] load = new float[8];
 	
 	public SpriteSheet(int loc, int width, int height, Texture atlas) {
-		super(ShapeLoader.createDShape(new float[] {-1f,-1f, 0, 0, 0,1f, -1f, 0,0, 0, 1f, 1f, 0,0, 0, -1f, 1f, 0, 0,0}, new int[] {0,1,2,0,2,3}), atlas);
-		this.width=width;
-		this.height=height;
-		this.size = width * height;
-		this.update(loc);
+		this(loc, width, height, 0, atlas);
 		
 	}
 	
@@ -31,9 +27,13 @@ public class SpriteSheet extends RenderComp{
 		this.width=width;
 		this.height=height;
 		this.size = width * height;
-		this.update(loc);
+		
 		this.padding_w = padding * 1.0 / atlas.getWidth();
 		this.padding_h = padding * 1.0 / atlas.getHeight();
+		
+		this.update(loc);
+
+		
 	}
 
 	/**
@@ -52,32 +52,23 @@ public class SpriteSheet extends RenderComp{
 		
 		this.loc = loc;
 		
-		this.getVAO().bind();
 		
 		int uLoc = Math.abs(loc) - (loc<0?1:0);
 		
 		
-		int col = (uLoc % (this.size)) % width;
+		int col = (uLoc % this.size) % width;
 		int row = (uLoc % this.size) / width;
 		
 		
 		
 		int rot = (uLoc / size) % 4;
+		
 		boolean hflipped = loc<0;
 		
-		float low_x; 
-		float low_y;
-		float high_x;
-		float high_y;
-		
-		
-		low_x = (float) (col * 1.0f / this.width + padding_w);
-		low_y = (float) (row * 1.0f/ this.height + padding_h);
-		high_x = (float) ((col+1.0f) / this.width - padding_w);
-		high_y = (float) ((row+1f) / this.height - padding_h);
-	
-		
-		
+		float low_x = (float) (col * 1.0f / this.width + padding_w);
+		float low_y = (float) (row * 1.0f/ this.height + padding_h);
+		float high_x = (float) ((col+1.0f) / this.width - padding_w);
+		float high_y = (float) ((row+1f) / this.height - padding_h);
 	
 		if(hflipped) {
 			this.loadArr(high_x, low_y, low_x, high_y, rot);
@@ -86,9 +77,8 @@ public class SpriteSheet extends RenderComp{
 			this.loadArr(low_x, low_y, high_x, high_y, rot);
 		}
 		
-				
-		this.getVAO().getVBO().editAttribute(1, load);
-		
+		this.getVAO().bind();
+		this.getVAO().getVBO().editAttribute(1, load);		
 		this.getVAO().unbind();
 	}
 	

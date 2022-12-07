@@ -138,7 +138,7 @@ public class CollisionSystem implements ISystem{
 		
 	}
 	
-	public void resolveCollision(byte channel, Entity error, Entity constraint){
+	public static void resolveCollision(byte channel, Entity error, Entity constraint){
 		Location a = error.getComponent(Location.class);
 		Location b = constraint.getComponent(Location.class);
 		
@@ -150,8 +150,10 @@ public class CollisionSystem implements ISystem{
 		Vec2f a_center = new Vec2f((a_box.getX1()+a_box.getX2())/2 + a.getX(), (a_box.getY1()+a_box.getY2())/2 + a.getY());
 		Vec2f b_center = new Vec2f((b_box.getX1()+b_box.getX2())/2 + b.getX(), (b_box.getY1()+b_box.getY2())/2 + b.getY());
 
-		Vec2f center = new Vec2f(b_center.getX() - a_center.getX(), b_center.getY() - a_center.getY());
+		Vec2f center = new Vec2f((b_center.getX() - a_center.getX()) / a_box.getWidth(), (b_center.getY() - a_center.getY())/a_box.getHeight());
+		
 
+		
 		if(Math.abs(center.getX()) > Math.abs(center.getY())) {
 			if(center.getX() > 0) {
 				a.set(new float[] {b.getX() + b_box.getX1() - a_box.getX2() ,a.getY()});
@@ -169,11 +171,15 @@ public class CollisionSystem implements ISystem{
 		
 	}
 	
-	public boolean intersects(byte channel, Entity a, Entity b) {
+	public static boolean intersects(byte channel, Entity a, Entity b) {
 		BoundingBox a_bbox = a.getComponent(RigidBody.class).getChannel(channel);
 		Location a_loc = a.getComponent(Location.class);
 		BoundingBox b_bbox = b.getComponent(RigidBody.class).getChannel(channel);
 		Location b_loc = b.getComponent(Location.class);
+		
+		if(a_bbox == null || b_bbox == null) {
+			return false;
+		}
 		
 		float ax1 = a_bbox.getX1() + a_loc.getX();
 		float ax2 = a_bbox.getX2() + a_loc.getX();

@@ -33,7 +33,7 @@ public class Shader {
 		if(default_vs == null) {
 			try {
 
-				default_vs = new Shader(GL33.GL_VERTEX_SHADER, "src/engine/render/utils/shaders/default.vs");
+				default_vs = new Shader(GL33.GL_VERTEX_SHADER, "src/engine/render/utils/shaders/vs/default.vs");
 			} catch (IOException e) {
 				assert false;
 			}
@@ -47,7 +47,7 @@ public class Shader {
 		if(default_frag == null) {
 			try {
 
-				default_frag = new Shader(GL33.GL_FRAGMENT_SHADER, "src/engine/render/utils/shaders/default.frag");
+				default_frag = new Shader(GL33.GL_FRAGMENT_SHADER, "src/engine/render/utils/shaders/frag/default.frag");
 			} catch (IOException e) {
 				assert false;
 			}

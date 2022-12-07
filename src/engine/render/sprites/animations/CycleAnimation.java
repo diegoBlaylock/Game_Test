@@ -1,20 +1,20 @@
-package engine.render.animations;
+package engine.render.sprites.animations;
 
-import engine.render.utils.sprites.SpriteSheet;
+import engine.render.sprites.SpriteSheet;
 
 /**
- * This is a animation that cycles through sprites once and then holds
- * 
+ * Keeps track of counters and cycles through list of sprite positions
  * @author diego
  *
  */
-public class RampAnimation extends Animation {
+public class CycleAnimation extends Animation{
+
 	int[] cycles;
 	int interval;
 	int index;
 	int count;
 	
-	public RampAnimation(int interval, int... frames) {
+	public CycleAnimation(int interval, int... frames) {
 		this.cycles = frames;
 		this.interval = interval;
 		this.index = 0;
@@ -28,10 +28,6 @@ public class RampAnimation extends Animation {
 
 	@Override
 	public void update(SpriteSheet ss) {
-		if(index == cycles.length-1) {
-			return;
-		}
-		
 		if(count <= 0) {
 			index++;
 			index%= cycles.length;
@@ -46,5 +42,7 @@ public class RampAnimation extends Animation {
 	@Override
 	public void reset() {
 		index = 0;
+		count = 0;
 	}
+
 }

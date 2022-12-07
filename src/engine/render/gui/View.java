@@ -25,7 +25,7 @@ public class View {
 	}
 	
 	public float[] getViewMatrix() {
-		return Mat4f.createProjectionMatrix(fov, width, height, nearClip, farClip);
+		return Mat4f.createOrthoMatrix( width, height, nearClip, farClip);
 	}
 
 	public void resize(int width2, int height2) {

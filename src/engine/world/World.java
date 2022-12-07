@@ -21,7 +21,7 @@ public class World implements ILogic{
 	
 	
 	public World() {
-
+		
 	}
 	
 	public void cleanup() {

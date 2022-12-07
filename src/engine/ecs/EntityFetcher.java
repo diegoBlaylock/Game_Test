@@ -49,9 +49,9 @@ public class EntityFetcher implements IEntityFetcher{
 		
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SafeVarargs
 	@Override
-	public Collection<Entity> getEntitiesContaining(Class<? extends Component>... classes) {
+	public final Collection<Entity> getEntitiesContaining(Class<? extends Component>... classes) {
 		
 		List<Entity> output = new LinkedList<Entity>();
 		ent: for(Long i:entities) {
@@ -73,14 +73,19 @@ public class EntityFetcher implements IEntityFetcher{
 		entities.add(e.EID());
 
 	}
-	
-	public World getWorld() {
-		return world;
-		
-	}
 
 	public void remove(Entity e) {
 		entities.remove(e.EID());
+	}
+	
+	public void removeAll() {
+		entities.clear();
+	}
+
+	@Override
+	public World getWorld() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

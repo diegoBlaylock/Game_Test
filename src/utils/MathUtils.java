@@ -164,6 +164,7 @@ public class MathUtils {
 	public static class RayHit {
 		float distance;
 		long entity_id;
+		Vec2f location;
 		
 		protected RayHit(float distance, long entity_id) {
 			this.distance = distance;
@@ -178,6 +179,10 @@ public class MathUtils {
 			return Entity.fetch(entity_id);
 		}
 		
+		@Override
+		public String toString() {
+			return String.format("Ray Cast: e.%d dist.%.2f", entity_id, distance);
+		}
 	}
 	
 	/**
@@ -202,6 +207,8 @@ public class MathUtils {
 		
 		if(length == 1.0) {
 			return new Vec2f(xy);
+		} else if(length == 0){
+			throw new ArithmeticException("Can't normalize vector <0,0>");
 		}
 		
 		return new Vec2f( (xy[0]/ length),  (xy[1]/length));
@@ -247,6 +254,9 @@ public class MathUtils {
 	 * @return
 	 */
 	public static Vec2f add(Vec2f origin, Vec2f position) {
+		if(origin == null || position == null) {
+			throw new NullPointerException("Can't add null vector");
+		}
 		return new Vec2f(origin.getX()+position.getX(), origin.getY()+position.getY());
 	}
 

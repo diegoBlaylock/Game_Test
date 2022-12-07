@@ -55,36 +55,6 @@ public class FTFHandler implements IFontHandler{
 	
 	
 	public int indexOf(char x) {
-		/*int first = 0;
-		int index = chars.length/2;
-		int last = chars.length-1;
-				
-		if(chars[first] == x) {
-			return first;
-		}
-		
-		if(chars[last] == x) {
-			return last;
-		}
-			
-		while (first <= index && last >= index) {
-			char chr = chars[index];
-			
-			if(chr == x) {
-				return index;
-			} else if (chr < x){
-				first = index;
-				index = (last - first)/2;
-				
-			} else {
-				last = index;
-				index = (last - first)/2;
-			}
-			
-		}
-		
-		
-		return -1;*/
 		return Math.max(Arrays.binarySearch(chars, x), -1);	
 	}
 	

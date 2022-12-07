@@ -1,6 +1,6 @@
-package engine.render.animations;
+package engine.render.sprites.animations;
 
-import engine.render.utils.sprites.SpriteSheet;
+import engine.render.sprites.SpriteSheet;
 
 /**
  * Base Animation, holds one sprite location

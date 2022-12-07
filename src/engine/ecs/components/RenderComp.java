@@ -73,14 +73,14 @@ public class RenderComp extends Component{
 		Location loc = e.getComponent(Location.class);
 		Rotation rot = e.getComponent(Rotation.class);
 		
-		if(rot == null) {
-			Mat4f.translate(modelMatrix, loc.getX(), loc.getY(), 0);
-		} else {
+		if(rot != null) {
 			Mat4f.rotateZ(modelMatrix, rot.theta);
-			
-			return Mat4f.mul(Mat4f.translate(loc.getX(), loc.getY(), 0) , modelMatrix);
-			
 		}
+		
+		if(loc != null) {
+			modelMatrix = Mat4f.mul(Mat4f.translate(loc.getX(), loc.getY(), 0) , modelMatrix);
+		}
+		
 		
 		return modelMatrix;
 	}

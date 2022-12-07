@@ -24,7 +24,14 @@ public class Texture {
 	
 	int pointer;
 	int width;
+	int height;
+	int channels;
+	
+	ByteBuffer image;
+	
 	boolean initialized = false;
+	String filePath;
+	String identifier;
 	
 	public int getWidth() {
 		return width;
@@ -38,9 +45,7 @@ public class Texture {
 		return filePath;
 	}
 
-	int height;
-	String filePath;
-	String identifier;
+	
 	
 	
 	
@@ -56,6 +61,16 @@ public class Texture {
 		identifier = name;
 		
 		Texture.textures.put(name, this);
+		
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);		
+		IntBuffer channels = BufferUtils.createIntBuffer(1);
+		
+		image = STBImage.stbi_load(filePath, width, height, channels, 0);
+		
+		this.width = width.get(0);
+		this.height = height.get(0);
+		this.channels = channels.get(0);
 		
 		if(init) {
 			this.init();
@@ -87,21 +102,11 @@ public class Texture {
 		GL46.glTexParameteri(GL46.GL_TEXTURE_2D, GL46.GL_TEXTURE_MAG_FILTER, GL46.GL_NEAREST);
 		GL46.glTexParameteri(GL46.GL_TEXTURE_2D, GL46.GL_TEXTURE_MIN_FILTER, GL46.GL_NEAREST);
 		
-		IntBuffer width = BufferUtils.createIntBuffer(1);
-		IntBuffer height = BufferUtils.createIntBuffer(1);		
-		IntBuffer channels = BufferUtils.createIntBuffer(1);
-		
-		ByteBuffer image = STBImage.stbi_load(filePath, width, height, channels, 0);
-		
 		if(image != null) {
-			GL46.glTexImage2D(GL46.GL_TEXTURE_2D, 0, (channels.get(0) == 4? GL46.GL_RGBA: GL46.GL_RGB), width.get(0),height.get(0) ,0 ,(channels.get(0) == 4? GL46.GL_RGBA: GL46.GL_RGB),GL46.GL_UNSIGNED_BYTE,image);
-		}
-		
-		STBImage.stbi_image_free(image);
-		
-		this.width = width.get(0);
-		this.height = height.get(0);
-
+			GL46.glTexImage2D(GL46.GL_TEXTURE_2D, 0, (channels == 4? GL46.GL_RGBA: GL46.GL_RGB), width,height ,0 ,(channels == 4? GL46.GL_RGBA: GL46.GL_RGB),GL46.GL_UNSIGNED_BYTE,image);
+			STBImage.stbi_image_free(image);
+			image = null;
+		}		
 	}
 	
 	public void bind() {

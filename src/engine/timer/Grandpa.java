@@ -19,6 +19,8 @@ public class Grandpa {
 	private static LinkedList<ITask> deferred = new LinkedList<ITask>();
 	private static LinkedList<ITask> added = new LinkedList<ITask>();
 	
+	
+	
 	public static <T> void addTask(Task<T> t) {
 		synchronized(added) {
 			added.add(t);
@@ -49,9 +51,8 @@ public class Grandpa {
 	}
 	
 	public static <T> Task<T> schedule(float time, Callable<T> t) {
-		Task<T> task = new DelayWrapperTask<T>(time, new TaskImp<T>(t));
-		addTask(task);
-		return task;
+		return schedule(time,new TaskImp<T>(t));
+		
 	}
 	
 	public static <T> Task<T> timer(float time, Callable<T> t) {

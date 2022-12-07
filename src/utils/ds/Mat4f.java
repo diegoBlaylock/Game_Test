@@ -170,7 +170,19 @@ public class Mat4f {
 	public  static float[] createProjectionMatrix(float fov, float w, float h, float n, float f){
 		float[] projectionMatrix = new float[16];
 	      
-		return projectionMatrix(projectionMatrix, fov, w, h, n, f);
+		return projectionMatrix(projectionMatrix,fov, w, h, n, f);
+	}
+	
+	public  static float[] createProjectionMatrix(float w, float h, float n, float f){
+		float[] projectionMatrix = new float[16];
+	      
+		return projectionMatrix(projectionMatrix, w, h, n, f);
+	}
+	
+	public  static float[] createOrthoMatrix(float w, float h, float n, float f){
+		float[] orthoMatrix = new float[16];
+	      
+		return orthoMatrix(orthoMatrix, w, h, n, f);
 	}
 	
 	/**
@@ -200,37 +212,54 @@ public class Mat4f {
 		return (projectionMatrix);
 	}
 	
+	public  static float[] projectionMatrix(float[] projectionMatrix, float w, float h, float n, float f){
+			
+		float frustumLength = f-n;
+		float inv_aspect = h/w;
+		
+		projectionMatrix[0] = n * inv_aspect;
+		projectionMatrix[5] = projectionMatrix[0]/ inv_aspect;
+		projectionMatrix[10] = -((f+n) / frustumLength);
+		projectionMatrix[11] = -1;
+		projectionMatrix[14] = -((2 * f*n) / frustumLength);
+		projectionMatrix[15] = 0;
+		
+		
+
+		
+		return (projectionMatrix);
+	}
+	
 	/**
 	 * returns ortho projection
 	 * 
 	 * TODO
 	 * 
-	 * @param projectionMatrix
-	 * @param fov
 	 * @param w
 	 * @param h
 	 * @param n
 	 * @param f
 	 * @return
 	 */
-	public  static float[] orthoMatrix(float[] projectionMatrix, float fov, float w, float h, float n, float f){	     
-	    /*float aspectRatio = w / h;
-	    float yScale = (float) ((1f / Math.tan(Math.toRadians(fov / 2f))) * aspectRatio);
-	    float xScale = yScale / aspectRatio;
+	public  static float[] orthoMatrix(float[] orthoMatrix, float w, float h, float n, float f){	     
+	    float aspect = h/w;
 	    float frustumLength = f-n;
 	
 	      
-	    projectionMatrix[0] = xScale;
-	    projectionMatrix[5] = yScale;
-	    projectionMatrix[10] = -((f+n) / frustumLength);
-	    projectionMatrix[11] = -1;
-	    projectionMatrix[14] = -((2 * f*n) / frustumLength);
-	    projectionMatrix[15] = 0;
+	    orthoMatrix[0] = n * aspect;
+	    orthoMatrix[5] = n;
+	    orthoMatrix[10] = -(2 / frustumLength);
+	    orthoMatrix[11] = -1;
+	    orthoMatrix[14] = -((f+n) / frustumLength);
+	    orthoMatrix[15] = 0;
 	     
-	    return (projectionMatrix);*/
-		//TODO
-		
-		return null;
+	    return (orthoMatrix);
+	}
+	
+	public static float[] aspectScaleMatrix(float[] orthoMatrix, float w, float h) {
+		identity(orthoMatrix);
+		orthoMatrix[0] =h/w;
+		return orthoMatrix;
 	}
 	
 	//Very unpretty to string method

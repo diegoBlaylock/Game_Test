@@ -12,9 +12,9 @@ import engine.physics.Direction;
 import engine.physics.Location;
 import engine.physics.RigidBody;
 import engine.render.Texture;
-import engine.render.animations.Animation;
-import engine.render.animations.Animations;
-import engine.render.utils.sprites.SpriteSheet;
+import engine.render.sprites.SpriteSheet;
+import engine.render.sprites.animations.Animation;
+import engine.render.sprites.animations.Animations;
 import utils.Dir4;
 import utils.MathUtils;
 

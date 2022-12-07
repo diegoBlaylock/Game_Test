@@ -53,12 +53,37 @@ public class Vec2f implements IVec{
 		return String.format("<%.2f, %.2f>", xy[0], xy[1]);
 	}
 
+	/**
+	 * returns a copy of this vector that has been offset by the amount specified 
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Vec2f offset(float x, float y) {
 		return new Vec2f(this.getX() + x, this.getY() + y);
 	}
 
 	public void add(Vec2f scalar) {
 		this.setVec(getX() + scalar.getX(), getY()+scalar.getY());
+	}
+	
+	@Override
+	public int hashCode() {
+		return (int) (xy[0] * 256 - xy[1]);
+	}
+	
+	@Override
+	public boolean equals (Object o) {
+		if(o instanceof Vec2f) {
+			return Arrays.equals(xy, ((Vec2f)o).xy);
+			
+		}
+		return false;
+	}
+
+	public Vec2f scale(float f, int i) {
+		return new Vec2f(getX() * f, getY() * i);
 	}
 	
 }

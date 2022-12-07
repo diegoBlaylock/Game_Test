@@ -12,7 +12,7 @@ import engine.physics.Direction;
 import engine.physics.Location;
 import engine.physics.RigidBody;
 import engine.render.Texture;
-import engine.render.utils.sprites.SpriteSheet;
+import engine.render.sprites.SpriteSheet;
 
 /**
  * Sword class that jim uses

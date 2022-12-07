@@ -23,7 +23,7 @@ public class Window extends GContainer{
 	private int width;
 	private int height;
 	private GLFWFramebufferSizeCallbackI resizeCallback;
-	public final View mainView = new View(90f, width, height,0,0, 0.01f, 100f);
+	public final View mainView = new View(90f, width, height,0,0, 1f, 100f);
 	
 	public Window(String title, Window.Options opts, GLFWFramebufferSizeCallbackI resizeFn,  GLFWKeyCallbackI keyFn) {
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -66,7 +66,7 @@ public class Window extends GContainer{
             GLFW.glfwSwapInterval(1);
         }
 
-        GLFW.glfwShowWindow(handle);
+    //    GLFW.glfwShowWindow(handle);
 		
 		this.resizeCallback = resizeFn;
 		this.mainView.resize(width, height);

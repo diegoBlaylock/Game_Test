@@ -3,8 +3,8 @@ package engine.ecs.systems;
 import java.util.Collection;
 import engine.ecs.IEntityFetcher;
 import engine.ecs.entities.Entity;
-import engine.render.animations.Animation;
-import engine.render.utils.sprites.SpriteSheet;
+import engine.render.sprites.SpriteSheet;
+import engine.render.sprites.animations.Animation;
 
 /**
  * Updates sprite sheet from animation component

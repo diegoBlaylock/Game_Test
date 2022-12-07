@@ -43,13 +43,14 @@ public class Engine {
 	long player_id;
 	TextField fps = new TextField(-1f,1f, "FPS: ");
 	
-	static final int tps = 60; 
+	static final int tps = 120; 
 	
 	public Engine(Window w, World world2, Render render2, InputHandler ih) {
 		this.window = w;
 		this.world = world2;
 		this.render = render2;
 		this.ih = ih;
+		
 		
 		fps.setForeground(Color.WHITE);
 		fps.getFont().scale = 0.05f;
@@ -64,9 +65,10 @@ public class Engine {
 			@Override
 			public void invoke(int key, int action, int mods) {
 				if(action == GLFW.GLFW_PRESS) {
-					for(int i = 0 ;i < 4; i++) {
+					for(int i = 0 ;i < 200; i++) {
 						Octorok o = new Octorok();
-						o.getComponent(Location.class).shift(16, 32);
+						Location loc = Entity.fetch(player_id).getComponent(Location.class);
+						o.getComponent(Location.class).shift(loc.getX(), loc.getY());
 						world.addEntity(o);
 					}
 				}

@@ -1,7 +1,7 @@
-package engine.render.animations;
+package engine.render.sprites.animations;
 
 import engine.ecs.components.Component;
-import engine.render.utils.sprites.SpriteSheet;
+import engine.render.sprites.SpriteSheet;
 
 /**
  * This is used to update the SpriteSheet selection

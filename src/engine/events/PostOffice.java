@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import engine.events.Channel.Entry;
 import engine.events.Channel.Mode;
 
@@ -29,11 +28,24 @@ public class PostOffice {
 	 */
 	static final Map<Class, Map<Long, Subscription>> SUBSCRIPTIONS = new HashMap<Class, Map<Long, Subscription>>();
 	
-	
+	/**
+	 * sends a private event to the suscibers given.
+	 * 
+	 * @param <T>
+	 * @param event
+	 * @param subscribers
+	 */
 	public static <T extends Event> void mail(T event, long... subscribers){
 		send(Mode.MAIL, event, subscribers);
 	}
 	
+	/**
+	 * Sends a public event to all except to the suscribers listed. This will receive a private notification
+	 * 
+	 * @param <T>
+	 * @param event
+	 * @param ls
+	 */
 	public static <T extends Event> void broadcast(T event, long...ls){
 		send(Mode.BROADCAST, event, ls);
 	}
@@ -72,13 +84,13 @@ public class PostOffice {
 					
 					while(sub_iter.hasNext()) {
 						Subscription<T> sub = sub_iter.next();
-						
+							
 						if(sub.cancelled) {
 							sub_iter.remove();
 							continue;
 						}
 						
-						if(!((sub.scope == Scope.PUBLIC || (Arrays.binarySearch(entry.subscribers, sub.subscriber) >= 0) ) && sub.enabled)) {
+						if(!((sub.scope == Scope.PUBLIC || (entry.subscribers!=null && Arrays.binarySearch(entry.subscribers, sub.subscriber) >= 0) ) && sub.enabled)) {
 							continue;
 						}
 						

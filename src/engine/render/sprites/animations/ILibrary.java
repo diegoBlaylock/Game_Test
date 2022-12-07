@@ -1,4 +1,4 @@
-package engine.render.animations;
+package engine.render.sprites.animations;
 
 import java.util.Map;
 

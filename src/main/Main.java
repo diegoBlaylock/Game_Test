@@ -1,5 +1,7 @@
 package main;
 
+import org.lwjgl.glfw.GLFW;
+
 import engine.Engine;
 import engine.ecs.systems.Render;
 import engine.input.InputHandler;
@@ -19,9 +21,9 @@ public class Main {
 					
 			
 			Window w = Window.createWindow("Game Instance", 1000, 800, true);
+			GLFW.glfwShowWindow(w.getID());
 			
-			
-			Render r = new Render();
+			Render r = new Render(w);
 			
 			ENGINE = new Engine(w, new World(), r, ih);
 			

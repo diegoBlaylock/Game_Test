@@ -17,7 +17,7 @@ public class Vec2i implements IVec{
 	
 	@Override
 	public int hashCode() {
-		return xy[0] * 256 + xy[1];
+		return xy[0] * 256 - xy[1];
 	}
 	
 	@Override
@@ -25,7 +25,7 @@ public class Vec2i implements IVec{
 		if(o instanceof Vec2i) {
 			return Arrays.equals(xy, ((Vec2i)o).xy);
 			
-		}
+		} 
 		return false;
 	}
 	

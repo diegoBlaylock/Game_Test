@@ -65,7 +65,7 @@ public class VBO {
 	public void storeData(FloatBuffer buffer, boolean dynamic, AttrPointer...  pointers) {
 		this.bind();
 		GL46.glBufferData(GL46.GL_ARRAY_BUFFER, buffer, (dynamic? GL46.GL_DYNAMIC_DRAW:GL46.GL_STATIC_DRAW));
-		
+	
 		setAttributes(pointers);		
 	}
 	
@@ -111,6 +111,7 @@ public class VBO {
 			
 		this.unbind();
 	}
+
 	
 	private static FloatBuffer createFloatBuffer(float[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);

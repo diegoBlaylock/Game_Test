@@ -33,7 +33,10 @@ public class Channel<T> implements Iterable<Channel.Entry<T>>{
 			this.mode = mode;
 			subscribers = ls;
 			this.event = event;
-			Arrays.sort(subscribers);
+			
+			if(subscribers != null) {
+				Arrays.sort(subscribers);
+			}
 		}
 		
 		

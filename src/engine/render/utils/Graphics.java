@@ -13,9 +13,11 @@ import org.lwjgl.opengl.GL46;
 import engine.render.Texture;
 import engine.render.gui.FTFHandler;
 import engine.render.gui.IFontHandler;
+import engine.render.gui.Window;
 import engine.render.shapes.Shape;
 import engine.render.shapes.ShapeLoader;
 import utils.MathUtils;
+import utils.ds.Mat4f;
 import utils.ds.Vec2f;
 
 /**
@@ -31,10 +33,15 @@ public class Graphics {
 	Color c = Color.BLACK;
 		
 	Deque<Vec2f> offset_stack = new LinkedList<Vec2f>();
+		
+	float[] proj = new float[16];
 	
-	public Graphics() {
+	Window w;
+	
+	public Graphics(Window w) {
 		offset_stack.push(Vec2f.ZEROE);
 		fontHandler = new FTFHandler("res/fonts/nes.ftf");
+		this.w = w;
 	}
 	
 	public static ShaderProgram simple_shader;
@@ -45,12 +52,12 @@ public class Graphics {
 		try {
 		
 			simple_shader = new ShaderProgram();			
-			simple_shader.attach(new Shader(GL46.GL_VERTEX_SHADER, "src/engine/render/utils/shaders/graphics.vs"));
-			simple_shader.attach(new Shader(GL46.GL_FRAGMENT_SHADER, "src/engine/render/utils/shaders/simplecolor.frag"));
+			simple_shader.attach(new Shader(GL46.GL_VERTEX_SHADER, "src/engine/render/utils/shaders/vs/graphics.vs"));
+			simple_shader.attach(new Shader(GL46.GL_FRAGMENT_SHADER, "src/engine/render/utils/shaders/frag/simplecolor.frag"));
 			
 			text_shader = new ShaderProgram();
-			text_shader.attach(new Shader(GL46.GL_VERTEX_SHADER, "src/engine/render/utils/shaders/text.vs"));
-			text_shader.attach(new Shader(GL46.GL_FRAGMENT_SHADER, "src/engine/render/utils/shaders/color_texture.frag"));
+			text_shader.attach(new Shader(GL46.GL_VERTEX_SHADER, "src/engine/render/utils/shaders/vs/text.vs"));
+			text_shader.attach(new Shader(GL46.GL_FRAGMENT_SHADER, "src/engine/render/utils/shaders/frag/color_texture.frag"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,12 +102,14 @@ public class Graphics {
 	public void drawText(String text, float x, float y) {
 		text_shader.use();
 		Shape s = fontHandler.generateShape(text);
+		loadProj();
 
 		text_shader.uploadTexture("texture", 0);
 		text_shader.uploadColor("replacementColor", c);
-		text_shader.uploadVec2f("offset", getOffset().offset(x, y));
+		text_shader.uploadVec2f("offset", getOffset().offset(x, y).scale(w.getWidth() * 1.0f/w.getHeight(), 1));
 		text_shader.upload("scale", fontHandler.getSize());
-		
+		text_shader.uploadMatrix4f("proj", proj);
+
 		
 		GL46.glActiveTexture(GL46.GL_TEXTURE0);
 		fontHandler.getTexture().bind();
@@ -121,7 +130,16 @@ public class Graphics {
 	void setSimpleUniforms() {
 		simple_shader.use();
 		simple_shader.uploadColor("color", c);
-		simple_shader.uploadVec2f("offset", getOffset());
+		simple_shader.uploadVec2f("offset", getOffset().scale(w.getWidth() * 1.0f/w.getHeight(), 1));
+		loadProj();
+		simple_shader.uploadMatrix4f("proj", proj);
+		
+		int err;
+		while((err = GL46.glGetError()) != GL46.GL_NO_ERROR)
+		{
+			System.out.println(err);
+			System.exit(0);
+		}
 	}
 
 	public Graphics pushO(Vec2f position) {
@@ -138,6 +156,11 @@ public class Graphics {
 
 	public void setFont(Font font) {
 		fontHandler.setFont(font);
+	}
+	
+	void loadProj() {
+		Mat4f.aspectScaleMatrix(proj, w.getWidth(), w.getHeight());
+		//Mat4f.identity(proj);
 	}
 	
 }
